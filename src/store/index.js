@@ -1,12 +1,14 @@
 import { createStore } from 'vuex';
+import saveStatePlugin from './saveStatePlugin';
+import files from './modules/files';
 
 export default createStore({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+  plugins: [saveStatePlugin],
+  state: {},
+  mutations: {},
+  getters: {},
+  actions: {},
   modules: {
+    files,
   },
 });

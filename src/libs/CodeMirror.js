@@ -20,9 +20,7 @@ import 'codemirror/addon/display/fullscreen.css';
 import 'codemirror/addon/scroll/simplescrollbars.css';
 import 'codemirror/addon/scroll/simplescrollbars';
 
-import code from '../defaultText';
-
-export default function getEditor(selectorId) {
+export default function createEditor(selectorId) {
   const editor = CodeMirror.fromTextArea(document.getElementById(selectorId), {
     lineNumbers: true,
     lineWrapping: true,
@@ -39,7 +37,6 @@ export default function getEditor(selectorId) {
       },
     },
   });
-  editor.getDoc().setValue(code);
 
   return editor;
 }

@@ -1,4 +1,5 @@
-const code = `\
+const defaultContent = {
+  'New file': `\
 # Showdown parser
 
 > Showdown is a Javascript Markdown to HTML converter, based on the original works by John Gruber. It can be used client side (in the browser) or server side (with Node or io).
@@ -752,6 +753,7 @@ In most cases, Showdown's output is identical to that of Perl Markdown v1.0.2b7.
       <li><p>baz</p></li>
     </ul>
     \`\`\`
-`;
+`,
+};
 
-export default code;
+export default defaultContent;

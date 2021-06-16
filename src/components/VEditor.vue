@@ -10,8 +10,9 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
 import converter from '../libs/showdown';
-import getEditor from '../libs/CodeMirror';
+import createEditor from '../libs/CodeMirror';
 
 export default {
   name: 'VEditor',
@@ -21,23 +22,50 @@ export default {
     };
   },
   mounted() {
-    const editor = getEditor('editor');
-    this.convertedHTML = converter(editor.getValue());
-
-    // sync scrolling
-    editor.on('scroll', (cm) => {
+    this.editor = createEditor('editor');
+    this.editor.on('scroll', (cm) => {
       const scrolledPercent = cm.getScrollInfo().top / cm.getScrollInfo().height;
       this.$refs.output.scrollTop = this.$refs.output.scrollHeight * scrolledPercent;
     });
 
-    editor.on('changes', (cm) => {
+    this.editor.on('changes', (cm) => {
       if (this.timer) {
         clearTimeout(this.timer);
       }
       this.timer = setTimeout(() => {
         this.convertedHTML = converter(cm.getValue());
+        this.CHANGE_CONTENT_BY_FILE_NAME({ name: this.currentFileName, content: cm.getValue() });
       }, 400);
     });
+
+    try {
+      this.editor.getDoc().setValue(this.getContentByFileName(this.currentFileName));
+    } catch (err) {
+      // TODO: REDIRECT on error page
+      this.$router.push('/');
+    }
+  },
+  computed: {
+    ...mapGetters(['getContentByFileName']),
+    currentFileName() {
+      return this.$route.params.name;
+    },
+  },
+  methods: {
+    ...mapMutations(['CHANGE_CONTENT_BY_FILE_NAME']),
+  },
+  watch: {
+    $route: {
+      handler() {
+        try {
+          this.editor.getDoc().setValue(this.getContentByFileName(this.currentFileName));
+        } catch (err) {
+          // TODO: REDIRECT on error page
+          this.$router.push('/');
+        }
+      },
+      deep: true,
+    },
   },
 };
 </script>
@@ -45,10 +73,14 @@ export default {
 <style scoped>
 .container {
   display: flex;
+  background-color: var(--surface-200);
+  gap: 5px;
+  padding: 5px;
+  height: calc(100vh - 76px);
 }
 
 .v-output, :deep(.CodeMirror) {
-  height: 100vh;
+  height: 100%;
   width: 50%;
 }
 
@@ -60,6 +92,7 @@ export default {
   overflow: auto;
   border: 1px solid #eee;
   padding: 10px;
+  background-color: var(--bluegray-50);
 }
 
 .v-output::-webkit-scrollbar {
