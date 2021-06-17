@@ -1,5 +1,10 @@
 import defaultContent from '@/defaultContent';
-import { CHANGE_CONTENT_BY_FILE_NAME, CREATE_NEW_FILE, DELETE_FILE } from '../mutations-types';
+import {
+  CHANGE_CONTENT_BY_FILE_NAME,
+  CREATE_NEW_FILE,
+  DELETE_FILE,
+  CHANGE_FILE_NAME,
+} from '../mutations-types';
 
 const allFiles = JSON.parse(localStorage.getItem('allFiles')) || defaultContent;
 
@@ -17,6 +22,11 @@ const files = {
     },
     [DELETE_FILE](state, { name }) {
       delete state.allFiles[name];
+    },
+    [CHANGE_FILE_NAME](state, { oldName, newName }) {
+      const value = state.allFiles[oldName];
+      delete state.allFiles[oldName];
+      state.allFiles[newName] = value;
     },
   },
   getters: {
