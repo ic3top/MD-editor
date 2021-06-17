@@ -5,21 +5,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import VMenubar from '../components/VMenubar.vue';
-import VEditor from '../components/VEditor.vue';
+import VMenubar from './VMenubar.vue';
+import VEditor from './VEditor.vue';
 
 export default {
   name: 'MainEditor',
   components: {
     VMenubar,
     VEditor,
-  },
-  beforeRouteUpdate(to, from, next) {
-    if (!this.getContentByFileName(to.params.name)) {
-      next('/');
-      return;
-    }
-    next();
   },
   computed: {
     ...mapGetters(['getContentByFileName']),

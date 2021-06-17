@@ -11,8 +11,8 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
-import converter from '../libs/showdown';
-import createEditor from '../libs/CodeMirror';
+import converter from '../../libs/showdown';
+import createEditor from '../../libs/CodeMirror';
 
 export default {
   name: 'VEditor',
@@ -41,6 +41,7 @@ export default {
     try {
       this.editor.getDoc().setValue(this.getContentByFileName(this.currentFileName));
     } catch (err) {
+      console.log(err);
       // TODO: REDIRECT on error page
       this.$router.push('/');
     }
