@@ -41,9 +41,10 @@ export default {
     try {
       this.editor.getDoc().setValue(this.getContentByFileName(this.currentFileName));
     } catch (err) {
-      console.log(err);
-      // TODO: REDIRECT on error page
-      this.$router.push('/');
+      this.$router.push({
+        name: '404Resource',
+        params: { resource: 'file' },
+      });
     }
   },
   computed: {
@@ -59,10 +60,15 @@ export default {
     $route: {
       handler() {
         try {
-          this.editor.getDoc().setValue(this.getContentByFileName(this.currentFileName));
+          // TODO: fix
+          if (this.$route.path !== '/') {
+            this.editor.getDoc().setValue(this.getContentByFileName(this.currentFileName));
+          }
         } catch (err) {
-          // TODO: REDIRECT on error page
-          this.$router.push('/');
+          this.$router.push({
+            name: '404Resource',
+            params: { resource: 'SHEET' },
+          });
         }
       },
       deep: true,
