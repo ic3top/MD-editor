@@ -116,6 +116,6 @@ export default {
   background-color: var(--surface-200);
 }
 :deep(.p-submenu-list) {
-  z-index: 10;
+  z-index: 10!important;
 }
 </style>
