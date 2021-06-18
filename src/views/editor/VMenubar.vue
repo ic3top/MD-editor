@@ -52,6 +52,7 @@ export default {
     return {
       newFileName: '',
       displayDialog: false,
+      showMenu: true,
       items: [
         {
           label: 'File',
@@ -123,33 +124,42 @@ export default {
           ],
         },
         {
-          label: 'Events',
-          icon: 'pi pi-fw pi-calendar',
+          label: 'View',
+          icon: 'pi pi-fw pi-eye',
           items: [
             {
-              label: 'Edit',
-              icon: 'pi pi-fw pi-pencil',
-              items: [
-                {
-                  label: 'Save',
-                  icon: 'pi pi-fw pi-calendar-plus',
-                },
-                {
-                  label: 'Delete',
-                  icon: 'pi pi-fw pi-calendar-minus',
-                },
-
-              ],
+              label: 'Reader',
+              icon: 'pi pi-fw pi-book',
+              command: () => {
+                this.CHANGE_EDITOR_MODE({ mode: 'reader' });
+              },
             },
             {
-              label: 'Archieve',
-              icon: 'pi pi-fw pi-calendar-times',
-              items: [
-                {
-                  label: 'Remove',
-                  icon: 'pi pi-fw pi-calendar-minus',
-                },
-              ],
+              label: 'Editor',
+              icon: 'pi pi-fw pi-window-maximize',
+              command: () => {
+                this.CHANGE_EDITOR_MODE({ mode: 'markdown' });
+              },
+            },
+            {
+              label: 'Default',
+              icon: 'pi pi-fw pi-window-minimize',
+              command: () => {
+                this.CHANGE_EDITOR_MODE({ mode: 'default' });
+              },
+            },
+            {
+              label: 'Markdown docs',
+              icon: 'pi pi-fw pi-list',
+              command: () => {
+                this.CHANGE_EDITOR_MODE({ mode: 'docs' });
+              },
+            },
+            {
+              label: 'Unparsed HTML',
+              command: () => {
+                this.CHANGE_EDITOR_MODE({ mode: 'HTML' });
+              },
             },
           ],
         },
@@ -164,7 +174,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['DELETE_FILE', 'CREATE_NEW_FILE']),
+    ...mapMutations(['DELETE_FILE', 'CREATE_NEW_FILE', 'CHANGE_EDITOR_MODE']),
     createNewFile() {
       if (this.newFileName) {
         const name = this.newFileName;

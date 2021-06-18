@@ -1,6 +1,8 @@
 <template>
-  <v-menubar />
-  <v-editor />
+  <div class="v-maineditor">
+    <v-menubar />
+    <v-editor />
+  </div>
 </template>
 
 <script>
@@ -19,3 +21,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.v-maineditor {
+  height: calc(100vh - 76px);
+}
+</style>

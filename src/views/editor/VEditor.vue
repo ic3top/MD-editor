@@ -1,11 +1,20 @@
 <template>
-  <div class="container">
+  <div class="v-container" :class="currentEditorMode">
     <textarea
       name="editor"
       id="editor"
     >
     </textarea>
-    <div ref="output" class="v-output" v-html="convertedHTML"></div>
+    <div ref="output"
+         class="v-output"
+         v-html="convertedHTML"
+         v-if="currentEditorMode !== 'docs' && currentEditorMode !== 'HTML'"
+    >
+    </div>
+    <div v-else-if="currentEditorMode === 'HTML'" class="v-output">
+      {{ convertedHTML }}
+    </div>
+    <markdown-docs v-else />
   </div>
 </template>
 
@@ -13,9 +22,13 @@
 import { mapGetters, mapMutations } from 'vuex';
 import converter from '../../libs/showdown';
 import createEditor from '../../libs/CodeMirror';
+import MarkdownDocs from './MarkdownDocs.vue';
 
 export default {
   name: 'VEditor',
+  components: {
+    MarkdownDocs,
+  },
   data() {
     return {
       convertedHTML: '',
@@ -25,7 +38,9 @@ export default {
     this.editor = createEditor('editor');
     this.editor.on('scroll', (cm) => {
       const scrolledPercent = cm.getScrollInfo().top / cm.getScrollInfo().height;
-      this.$refs.output.scrollTop = this.$refs.output.scrollHeight * scrolledPercent;
+      if (this.$refs.output) {
+        this.$refs.output.scrollTop = this.$refs.output.scrollHeight * scrolledPercent;
+      }
     });
 
     this.editor.on('changes', (cm) => {
@@ -48,9 +63,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getContentByFileName']),
+    ...mapGetters(['getContentByFileName', 'getEditorMode']),
     currentFileName() {
       return this.$route.params.name;
+    },
+    currentEditorMode() {
+      switch (this.getEditorMode) {
+        case 'markdown':
+          return 'md-mode';
+        case 'reader':
+          return 'reader-mode';
+        default:
+          return this.getEditorMode;
+      }
     },
   },
   methods: {
@@ -78,17 +103,17 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.v-container {
   display: flex;
   background-color: var(--surface-200);
   gap: 5px;
   padding: 5px;
-  height: calc(100vh - 76px);
+  height: 100%;
 }
 
 .v-output, :deep(.CodeMirror) {
-  height: 100%;
   width: 50%;
+  height: 100%;
 }
 
 :deep(.CodeMirror) {
@@ -100,19 +125,40 @@ export default {
   border: 1px solid #eee;
   padding: 10px;
   background-color: var(--bluegray-50);
+  margin: 0 auto;
 }
 
 .v-output::-webkit-scrollbar {
   width: .5rem;
 }
 
-.v-output::-webkit-scrollbar-track {
-}
-
 .v-output::-webkit-scrollbar-thumb {
   background-color: var(--primary-color);
   border-radius: 3px
 }
+
+/*MODES*/
+
+.md-mode :deep(.CodeMirror) {
+  width: 100%;
+}
+.md-mode .v-output {
+  display: none;
+  box-shadow: none;
+}
+
+.reader-mode :deep(.CodeMirror) {
+  display: none;
+}
+.reader-mode .v-output {
+  width: 80%;
+  box-shadow: 2px 3px 8px #000;
+}
+.reader-mode.v-container {
+  background-color: #dddddd;
+}
+
+/*/MODES*/
 
 .v-output :deep(pre) {
   white-space: pre-wrap;

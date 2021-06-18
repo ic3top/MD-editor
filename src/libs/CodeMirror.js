@@ -20,6 +20,12 @@ import 'codemirror/addon/display/fullscreen.css';
 import 'codemirror/addon/scroll/simplescrollbars.css';
 import 'codemirror/addon/scroll/simplescrollbars';
 
+/**
+ * Converts a markdown text into HTML
+ *
+ * @param {string} selectorId The selector if the element to insert CodeMirror
+ * @returns {string} CodeMirror instance
+ */
 export default function createEditor(selectorId) {
   const editor = CodeMirror.fromTextArea(document.getElementById(selectorId), {
     lineNumbers: true,
@@ -28,14 +34,7 @@ export default function createEditor(selectorId) {
     mode: 'gfm',
     styleActiveLine: true,
     scrollbarStyle: 'overlay',
-    extraKeys: {
-      F11(cm) {
-        cm.setOption('fullScreen', !cm.getOption('fullScreen'));
-      },
-      Esc(cm) {
-        if (cm.getOption('fullScreen')) cm.setOption('fullScreen', false);
-      },
-    },
+    extraKeys: {},
   });
 
   return editor;
