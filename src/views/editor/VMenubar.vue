@@ -38,6 +38,9 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import {
+  DOCS, MARKDOWN, READER, HTML, DEFAULT,
+} from './editorModes.js';
 
 export default {
   name: 'VSidebar',
@@ -131,34 +134,34 @@ export default {
               label: 'Reader',
               icon: 'pi pi-fw pi-book',
               command: () => {
-                this.CHANGE_EDITOR_MODE({ mode: 'reader' });
+                this.CHANGE_EDITOR_MODE({ mode: READER });
               },
             },
             {
               label: 'Editor',
               icon: 'pi pi-fw pi-window-maximize',
               command: () => {
-                this.CHANGE_EDITOR_MODE({ mode: 'markdown' });
+                this.CHANGE_EDITOR_MODE({ mode: MARKDOWN });
               },
             },
             {
               label: 'Default',
               icon: 'pi pi-fw pi-window-minimize',
               command: () => {
-                this.CHANGE_EDITOR_MODE({ mode: 'default' });
+                this.CHANGE_EDITOR_MODE({ mode: DEFAULT });
               },
             },
             {
               label: 'Markdown docs',
               icon: 'pi pi-fw pi-list',
               command: () => {
-                this.CHANGE_EDITOR_MODE({ mode: 'docs' });
+                this.CHANGE_EDITOR_MODE({ mode: DOCS });
               },
             },
             {
               label: 'Unparsed HTML',
               command: () => {
-                this.CHANGE_EDITOR_MODE({ mode: 'HTML' });
+                this.CHANGE_EDITOR_MODE({ mode: HTML });
               },
             },
           ],

@@ -5,16 +5,16 @@
       id="editor"
     >
     </textarea>
+    <div v-if="currentEditorMode === HTML" class="v-output">
+      {{ convertedHTML }}
+    </div>
+    <markdown-docs v-else-if="currentEditorMode === DOCS" />
     <div ref="output"
          class="v-output"
          v-html="convertedHTML"
-         v-if="currentEditorMode !== 'docs' && currentEditorMode !== 'HTML'"
+         v-else
     >
     </div>
-    <div v-else-if="currentEditorMode === 'HTML'" class="v-output">
-      {{ convertedHTML }}
-    </div>
-    <markdown-docs v-else />
   </div>
 </template>
 
@@ -23,6 +23,9 @@ import { mapGetters, mapMutations } from 'vuex';
 import converter from '../../libs/showdown';
 import createEditor from '../../libs/CodeMirror';
 import MarkdownDocs from './MarkdownDocs.vue';
+import {
+  DOCS, MARKDOWN, READER, HTML,
+} from './editorModes.js';
 
 export default {
   name: 'VEditor',
@@ -32,6 +35,8 @@ export default {
   data() {
     return {
       convertedHTML: '',
+      HTML,
+      DOCS,
     };
   },
   mounted() {
@@ -69,9 +74,9 @@ export default {
     },
     currentEditorMode() {
       switch (this.getEditorMode) {
-        case 'markdown':
+        case MARKDOWN:
           return 'md-mode';
-        case 'reader':
+        case READER:
           return 'reader-mode';
         default:
           return this.getEditorMode;
@@ -92,7 +97,7 @@ export default {
         } catch (err) {
           this.$router.push({
             name: '404Resource',
-            params: { resource: 'SHEET' },
+            params: { resource: 'file' },
           });
         }
       },
