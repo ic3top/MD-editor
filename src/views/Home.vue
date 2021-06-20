@@ -19,7 +19,7 @@
       </template>
     </Card>
     <template v-if="getAllFileNames.length > 0">
-      <Card class="p-shadow-6 p-pt-4">
+      <Card class="p-shadow-6 p-pt-4 p-mt-2">
         <template #header>
           <h2 class="p-pl-3">Your saved files:</h2>
         </template>
@@ -92,31 +92,14 @@
     </template>
 
     <ConfirmPopup></ConfirmPopup>
-    <Dialog v-model:visible="displayDialog" dismissableMask :modal="true" :draggable="false">
-      <template #header>
-        <h3>Create new file</h3>
-      </template>
-
-      <div class="p-d-flex p-flex-column p-p-2">
-        <label for="fileName" class="p-mb-2">File name:</label>
-        <InputText
-          id="fileName"
-          type="text"
-          v-model.trim="newFileName"
-          @keyup.enter="createNewFile"
-          autofocus
-        />
-      </div>
-
-      <template #footer>
-        <Button @click="createNewFile" label="Create" icon="pi pi-check" autofocus />
-      </template>
-    </Dialog>
+    <new-file-dialog
+      v-model:visible="displayDialog"
+      @createNewFile="createNewFile"
+    />
   </div>
 </template>
 
 <script>
-import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 import ConfirmPopup from 'primevue/confirmpopup';
@@ -124,22 +107,23 @@ import InputText from 'primevue/inputtext';
 
 import { nextTick } from 'vue';
 import { mapGetters, mapMutations } from 'vuex';
+import newFileDialog from '../components/newFileDialog.vue';
 
 export default {
   name: 'Home',
+  components: {
+    Card,
+    Button,
+    ConfirmPopup,
+    InputText,
+    newFileDialog,
+  },
   data() {
     return {
       displayDialog: false,
       newFileName: '',
       savedFileName: '',
     };
-  },
-  components: {
-    Card,
-    Button,
-    ConfirmPopup,
-    Dialog,
-    InputText,
   },
   computed: {
     ...mapGetters(['getAllFileNames']),
@@ -156,11 +140,9 @@ export default {
         },
       });
     },
-    createNewFile() {
-      if (this.newFileName) {
-        this.CREATE_NEW_FILE({ name: this.newFileName });
-        this.$router.push(`/files/${this.newFileName}`);
-      }
+    createNewFile(newFileName) {
+      this.CREATE_NEW_FILE({ name: newFileName });
+      this.$router.push(`/files/${newFileName}`);
     },
     async editNameOpen(name) {
       this.savedFileName = name;
@@ -183,11 +165,12 @@ export default {
 
 <style scoped>
 .v-home {
-  background-color: var(--surface-100);
   display: flex;
   justify-content: space-around;
   flex-direction: column;
   align-items: center;
+  padding: 5px;
+  background-color: var(--surface-100);
   min-height: 100vh;
   color: #dddddd;
 }
