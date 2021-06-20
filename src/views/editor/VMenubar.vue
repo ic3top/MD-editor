@@ -4,7 +4,7 @@
   </div>
 
   <Dialog
-    v-model:visible="displayDialog"
+    v-model:visible="displayNewFileDialog"
     dismissableMask
     :modal="true"
     :draggable="false"
@@ -13,7 +13,7 @@
       <h3>Create new file</h3>
     </template>
 
-    <div class="p-d-flex p-flex-column">
+    <div class="p-d-flex p-flex-column p-p-2">
       <label for="fileName" class="p-mb-2">File name:</label>
       <InputText
         id="fileName"
@@ -25,18 +25,40 @@
     </div>
 
     <template #footer>
-      <Button @click="createNewFile" label="Create" icon="pi pi-check" autofocus />
+      <Button @click="createNewFile" label="Create" icon="pi pi-check" />
+    </template>
+  </Dialog>
+  <Dialog
+    v-model:visible="displaySettingsDialog"
+    dismissableMask
+    :modal="true"
+    :draggable="false"
+  >
+    <template #header>
+      <h3>Editor settings</h3>
+    </template>
+
+    <div class="p-d-flex p-flex-column p-px-5">
+      <div v-for="(value, option) in getConverterSettings" :key="option">
+        <h4 class="p-mt-4 p-mb-1">{{ option }}</h4>
+        <InputSwitch v-model="newConverterSettings[option]" />
+      </div>
+    </div>
+
+    <template #footer>
+      <Button @click="applySettings" label="Apply" icon="pi pi-check" />
     </template>
   </Dialog>
   <ConfirmDialog :draggable="false" />
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapGetters } from 'vuex';
 import Menubar from 'primevue/menubar';
 import ConfirmDialog from 'primevue/confirmdialog';
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
+import InputSwitch from 'primevue/inputswitch';
 import Button from 'primevue/button';
 import {
   DOCS, MARKDOWN, READER, HTML, DEFAULT,
@@ -50,12 +72,14 @@ export default {
     InputText,
     Dialog,
     Button,
+    InputSwitch,
   },
   data() {
     return {
       newFileName: '',
-      displayDialog: false,
-      showMenu: true,
+      displayNewFileDialog: false,
+      displaySettingsDialog: false,
+      newConverterSettings: {},
       items: [
         {
           label: 'File',
@@ -71,7 +95,7 @@ export default {
               label: 'New',
               icon: 'pi pi-fw pi-plus',
               command: () => {
-                this.displayDialog = true;
+                this.displayNewFileDialog = true;
               },
             },
             {
@@ -167,6 +191,14 @@ export default {
           ],
         },
         {
+          label: 'Settings',
+          icon: 'pi pi-fw pi-cog',
+          command: () => {
+            this.newConverterSettings = this.getConverterSettings;
+            this.displaySettingsDialog = true;
+          },
+        },
+        {
           label: 'Quit',
           icon: 'pi pi-fw pi-power-off',
           command: () => {
@@ -177,15 +209,22 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['DELETE_FILE', 'CREATE_NEW_FILE', 'CHANGE_EDITOR_MODE']),
+    ...mapMutations(['DELETE_FILE', 'CREATE_NEW_FILE', 'CHANGE_EDITOR_MODE', 'UPDATE_CONVERTER_SETTINGS']),
     createNewFile() {
       if (this.newFileName) {
         const name = this.newFileName;
         this.CREATE_NEW_FILE({ name });
-        this.displayDialog = false;
+        this.displayNewFileDialog = false;
         this.$router.push(`/files/${name}`);
       }
     },
+    applySettings() {
+      this.UPDATE_CONVERTER_SETTINGS(this.newConverterSettings);
+      this.displaySettingsDialog = false;
+    },
+  },
+  computed: {
+    ...mapGetters(['getConverterSettings']),
   },
 };
 </script>

@@ -1,15 +1,7 @@
 import showdown from 'showdown';
+import store from '../store';
 
-const defaultOptions = {
-  strikethrough: true,
-  tablesHeaderId: true,
-  tasklists: true,
-  parseImgDimensions: true,
-  smoothLivePreview: true,
-  tables: true,
-  customizedHeaderId: true,
-  emoji: true,
-};
+const defaultOptions = store.getters.getConverterSettings;
 
 /**
  * Converts a markdown text into HTML

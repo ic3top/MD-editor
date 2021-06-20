@@ -97,12 +97,12 @@
         <h3>Create new file</h3>
       </template>
 
-      <div class="p-d-flex p-flex-column">
+      <div class="p-d-flex p-flex-column p-p-2">
         <label for="fileName" class="p-mb-2">File name:</label>
         <InputText
           id="fileName"
           type="text"
-          v-model="newFileName"
+          v-model.trim="newFileName"
           @keyup.enter="createNewFile"
           autofocus
         />

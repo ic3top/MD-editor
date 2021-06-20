@@ -14,4 +14,8 @@ export default {
   margin: 0;
   padding: 0;
 }
+
+.p-hidden-accessible {
+  display: none;
+}
 </style>
