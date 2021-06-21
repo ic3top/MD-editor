@@ -1,4 +1,4 @@
-import { UPDATE_CONVERTER_SETTINGS } from '../mutations-types';
+import { UPDATE_EDITOR_SETTINGS } from '../mutations-types';
 
 const defaultSettings = {
   strikethrough: true,
@@ -9,23 +9,26 @@ const defaultSettings = {
   tables: true,
   customizedHeaderId: true,
   emoji: true,
+  simplifiedAutoLink: false,
+  syncScroll: true,
 };
-const settings = JSON.parse(localStorage.getItem('converterSettings')) || defaultSettings;
 
-const converterSettings = {
+const settings = JSON.parse(localStorage.getItem('editorSettings')) || defaultSettings;
+
+const editorSettings = {
   state: {
     settings,
   },
   mutations: {
-    [UPDATE_CONVERTER_SETTINGS](state, newSettings = {}) {
+    [UPDATE_EDITOR_SETTINGS](state, newSettings = {}) {
       state.settings = newSettings;
     },
   },
   getters: {
-    getConverterSettings(state) {
+    getEditorSettings(state) {
       return state.settings;
     },
   },
 };
 
-export default converterSettings;
+export default editorSettings;

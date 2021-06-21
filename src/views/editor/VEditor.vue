@@ -42,6 +42,7 @@ export default {
   mounted() {
     this.editor = createEditor('editor');
     this.editor.on('scroll', (cm) => {
+      if (!this.getEditorSettings.syncScroll) return;
       const scrolledPercent = cm.getScrollInfo().top / cm.getScrollInfo().height;
       if (this.$refs.output) {
         this.$refs.output.scrollTop = this.$refs.output.scrollHeight * scrolledPercent;
@@ -68,7 +69,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getContentByFileName', 'getEditorMode']),
+    ...mapGetters(['getContentByFileName', 'getEditorMode', 'getEditorSettings']),
     currentFileName() {
       return this.$route.params.name;
     },

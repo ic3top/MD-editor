@@ -12,10 +12,21 @@
     </template>
 
     <div class="p-d-flex p-flex-column p-px-5">
-      <div v-for="(value, option) in converterSettings" :key="option">
-        <h4 class="p-mt-4 p-mb-1">{{ option }}</h4>
-        <InputSwitch v-model="newConverterSettings[option]" />
-      </div>
+      <Panel
+        v-for="(value, option) in editorSettings"
+        :key="option"
+        :toggleable="true"
+        :collapsed="true"
+        class="p-mt-2"
+      >
+        <template #header>
+          <div>
+            <h4 class="p-mt-4 p-mb-1">{{ option }}</h4>
+            <InputSwitch v-model="newEditorSettings[option]" />
+          </div>
+        </template>
+        <div v-html="descriptions[option]"></div>
+      </Panel>
     </div>
 
     <template #footer>
@@ -28,6 +39,8 @@
 import Dialog from 'primevue/dialog';
 import InputSwitch from 'primevue/inputswitch';
 import Button from 'primevue/button';
+import Panel from 'primevue/panel';
+import descriptions from '../views/editor/editorSettingsDesctiptions';
 
 export default {
   name: 'converterSettingsDialog',
@@ -35,7 +48,7 @@ export default {
     visible: {
       type: Boolean,
     },
-    converterSettings: {
+    editorSettings: {
       type: Object,
       required: true,
     },
@@ -45,16 +58,34 @@ export default {
     Dialog,
     InputSwitch,
     Button,
+    Panel,
   },
   data() {
     return {
-      newConverterSettings: JSON.parse(JSON.stringify(this.converterSettings)),
+      newEditorSettings: JSON.parse(JSON.stringify(this.editorSettings)),
+      descriptions,
     };
   },
   methods: {
     applySettings() {
-      this.$emit('applySettings', this.newConverterSettings);
+      this.$emit('applySettings', this.newEditorSettings);
     },
   },
 };
 </script>
+
+<style scoped>
+.p-panel {
+  width: 350px;
+}
+
+.p-panel-content {
+  max-width: 100%;
+}
+
+@media screen and (max-width: 500px) {
+  .p-panel {
+    width: 200px;
+  }
+}
+</style>

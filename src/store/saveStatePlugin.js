@@ -5,6 +5,6 @@ export default function saveStatePlugin(store) {
     // module -> editorMode; property -> editorMode
     localStorage.setItem('editorMode', JSON.stringify(state.editorMode.editorMode));
 
-    localStorage.setItem('converterSettings', JSON.stringify(state.converterSettings.settings));
+    localStorage.setItem('editorSettings', JSON.stringify(state.editorSettings.settings));
   });
 }

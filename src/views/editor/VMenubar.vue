@@ -9,7 +9,7 @@
   />
   <settings-dialog
     v-model:visible="displaySettingsDialog"
-    :converter-settings="getConverterSettings"
+    :editor-settings="getEditorSettings"
     @applySettings="applySettings"
   />
   <confirm-dialog :draggable="false" />
@@ -166,19 +166,19 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['DELETE_FILE', 'CREATE_NEW_FILE', 'CHANGE_EDITOR_MODE', 'UPDATE_CONVERTER_SETTINGS']),
+    ...mapMutations(['DELETE_FILE', 'CREATE_NEW_FILE', 'CHANGE_EDITOR_MODE', 'UPDATE_EDITOR_SETTINGS']),
     createNewFile(newFileName) {
       this.CREATE_NEW_FILE({ name: newFileName });
       this.displayNewFileDialog = false;
       this.$router.push(`/files/${newFileName}`);
     },
-    applySettings(newConverterSettings) {
-      this.UPDATE_CONVERTER_SETTINGS(newConverterSettings);
+    applySettings(newEditorSettings) {
+      this.UPDATE_EDITOR_SETTINGS(newEditorSettings);
       this.displaySettingsDialog = false;
     },
   },
   computed: {
-    ...mapGetters(['getConverterSettings']),
+    ...mapGetters(['getEditorSettings']),
   },
 };
 </script>
