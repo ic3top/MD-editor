@@ -4,6 +4,7 @@ import {
   CREATE_NEW_FILE,
   DELETE_FILE,
   CHANGE_FILE_NAME,
+  UPDATE_CONTENT_BY_FILE_NAME,
 } from '../mutations-types';
 
 const allFiles = JSON.parse(localStorage.getItem('allFiles')) || defaultContent;
@@ -15,6 +16,9 @@ const files = {
   mutations: {
     [CHANGE_CONTENT_BY_FILE_NAME](state, { name, content }) {
       state.allFiles[name] = content;
+    },
+    [UPDATE_CONTENT_BY_FILE_NAME](state, { name, content }) {
+      state.allFiles[name] += content;
     },
     [CREATE_NEW_FILE](state, { name, content = '' }) {
       if (state.allFiles[name]) throw Error(`File with name '${name}' already exists`);
@@ -50,10 +54,6 @@ const files = {
         return state.allFiles[name];
       };
     },
-  },
-  actions: {
-  },
-  modules: {
   },
 };
 

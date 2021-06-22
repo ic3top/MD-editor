@@ -60,13 +60,22 @@ export default {
     });
 
     try {
-      this.editor.getDoc().setValue(this.getContentByFileName(this.currentFileName));
+      this.setEditorContent();
     } catch (err) {
       this.$router.push({
         name: '404Resource',
         params: { resource: 'file' },
       });
     }
+
+    this.unsubscribe = this.$store.subscribe((mutation, state) => {
+      if (mutation.type === 'UPDATE_CONTENT_BY_FILE_NAME') {
+        this.setEditorContent(state.files.allFiles[this.currentFileName]);
+      }
+    });
+  },
+  unmounted() {
+    this.unsubscribe();
   },
   computed: {
     ...mapGetters(['getContentByFileName', 'getEditorMode', 'getEditorSettings']),
@@ -86,6 +95,9 @@ export default {
   },
   methods: {
     ...mapMutations(['CHANGE_CONTENT_BY_FILE_NAME']),
+    setEditorContent(content = this.getContentByFileName(this.currentFileName)) {
+      this.editor.getDoc().setValue(content);
+    },
   },
   watch: {
     $route: {
@@ -93,7 +105,7 @@ export default {
         try {
           // TODO: fix
           if (this.$route.path !== '/') {
-            this.editor.getDoc().setValue(this.getContentByFileName(this.currentFileName));
+            this.setEditorContent();
           }
         } catch (err) {
           this.$router.push({
@@ -143,7 +155,7 @@ export default {
   border-radius: 3px
 }
 
-/*MODES*/
+/* MODES */
 
 .md-mode :deep(.CodeMirror) {
   width: 100%;
@@ -164,7 +176,7 @@ export default {
   background-color: #dddddd;
 }
 
-/*/MODES*/
+/* /MODES */
 
 .v-output :deep(pre) {
   white-space: pre-wrap;
@@ -221,5 +233,13 @@ export default {
   border-left: 1px solid #ddd;
   line-height: 1.6;
   color: #6f6f6f;
+}
+
+.v-output :deep(td), :deep(th) {
+  padding: 5px;
+  border: 1px solid #222222;
+}
+.v-output :deep(table) {
+  border-collapse: collapse;
 }
 </style>

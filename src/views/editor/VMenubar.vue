@@ -24,6 +24,20 @@ import settingsDialog from '../../components/settingsDialog.vue';
 import {
   DOCS, MARKDOWN, READER, HTML, DEFAULT,
 } from './editorModes.js';
+import {
+  bold,
+  italic,
+  strikethrough,
+  image,
+  quote,
+  code,
+  link,
+  taskList,
+  unOrderedList,
+  orderedList,
+  table,
+  heading,
+} from './editorToolbarCommands';
 
 export default {
   name: 'VMenubar',
@@ -90,22 +104,62 @@ export default {
           icon: 'pi pi-fw pi-pencil',
           items: [
             {
-              label: 'Left',
-              icon: 'pi pi-fw pi-align-left',
+              label: 'heading',
+              command: () => heading(this.$route.params.name),
             },
             {
-              label: 'Right',
-              icon: 'pi pi-fw pi-align-right',
+              label: 'bold',
+              command: () => bold(this.$route.params.name),
             },
             {
-              label: 'Center',
-              icon: 'pi pi-fw pi-align-center',
+              label: 'italic',
+              command: () => italic(this.$route.params.name),
             },
             {
-              label: 'Justify',
-              icon: 'pi pi-fw pi-align-justify',
+              label: 'strikethrough',
+              command: () => strikethrough(this.$route.params.name),
             },
-
+            {
+              label: 'image',
+              icon: 'pi pi-fw pi-image',
+              command: () => image(this.$route.params.name),
+            },
+            {
+              label: 'quote',
+              command: () => quote(this.$route.params.name),
+            },
+            {
+              label: 'code',
+              command: () => code(this.$route.params.name),
+            },
+            {
+              label: 'link',
+              icon: 'pi pi-fw pi-link',
+              command: () => link(this.$route.params.name),
+            },
+            {
+              label: 'table',
+              icon: 'pi pi-fw pi-table',
+              command: () => table(this.$route.params.name),
+            },
+            {
+              label: 'list',
+              icon: 'pi pi-fw pi-list',
+              items: [
+                {
+                  label: 'unordered',
+                  command: () => unOrderedList(this.$route.params.name),
+                },
+                {
+                  label: 'ordered',
+                  command: () => orderedList(this.$route.params.name),
+                },
+                {
+                  label: 'tasks',
+                  command: () => taskList(this.$route.params.name),
+                },
+              ],
+            },
           ],
         },
         {
