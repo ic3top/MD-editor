@@ -12,9 +12,9 @@ export const heading = createNewCommand('  \n# Heading-h1');
 export const bold = createNewCommand('  \n**bold**');
 export const italic = createNewCommand('  \n_italic_');
 export const strikethrough = createNewCommand('  \n~~strikethrough~~');
-export const image = createNewCommand('  \n![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)');
-export const quote = createNewCommand('  \n> Coffee. The finest organic suspension ever devised... I beat the Borg with it.');
-export const code = createNewCommand('  \n```javascript'
+export const image = createNewCommand('  \n![alt text](https://picsum.photos/400)');
+export const quote = createNewCommand('  \n> Coffee. The finest organic suspension ever devised... I beat the Borg with it.\n');
+export const code = createNewCommand('  \n```javascript\n'
   + 'if (isAwesome){\n'
   + '  return true\n'
   + '}\n'
