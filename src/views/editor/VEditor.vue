@@ -20,6 +20,8 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+import { CHANGE_CONTENT_BY_FILE_NAME } from '@/store/mutations-types';
+
 import converter from '../../libs/showdown';
 import createEditor from '../../libs/CodeMirror';
 import MarkdownDocs from './MarkdownDocs.vue';
@@ -94,7 +96,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(['CHANGE_CONTENT_BY_FILE_NAME']),
+    ...mapMutations([CHANGE_CONTENT_BY_FILE_NAME]),
     setEditorContent(content = this.getContentByFileName(this.currentFileName)) {
       this.editor.getDoc().setValue(content);
     },

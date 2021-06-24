@@ -104,6 +104,11 @@ import Button from 'primevue/button';
 import Card from 'primevue/card';
 import ConfirmPopup from 'primevue/confirmpopup';
 import InputText from 'primevue/inputtext';
+import {
+  DELETE_FILE,
+  CREATE_NEW_FILE,
+  CHANGE_FILE_NAME,
+} from '@/store/mutations-types';
 
 import { nextTick } from 'vue';
 import { mapGetters, mapMutations } from 'vuex';
@@ -129,7 +134,7 @@ export default {
     ...mapGetters(['getAllFileNames']),
   },
   methods: {
-    ...mapMutations(['DELETE_FILE', 'CREATE_NEW_FILE', 'CHANGE_FILE_NAME']),
+    ...mapMutations([DELETE_FILE, CREATE_NEW_FILE, CHANGE_FILE_NAME]),
     deleteFile(event, name) {
       this.$confirm.require({
         target: event.currentTarget,

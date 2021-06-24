@@ -17,6 +17,13 @@
 
 <script>
 import { mapMutations, mapGetters } from 'vuex';
+import {
+  DELETE_FILE,
+  CREATE_NEW_FILE,
+  CHANGE_EDITOR_MODE,
+  UPDATE_EDITOR_SETTINGS,
+} from '@/store/mutations-types';
+
 import Menubar from 'primevue/menubar';
 import ConfirmDialog from 'primevue/confirmdialog';
 import newFileDialog from '../../components/newFileDialog.vue';
@@ -220,7 +227,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['DELETE_FILE', 'CREATE_NEW_FILE', 'CHANGE_EDITOR_MODE', 'UPDATE_EDITOR_SETTINGS']),
+    ...mapMutations([DELETE_FILE, CREATE_NEW_FILE, CHANGE_EDITOR_MODE, UPDATE_EDITOR_SETTINGS]),
     createNewFile(newFileName) {
       this.CREATE_NEW_FILE({ name: newFileName });
       this.displayNewFileDialog = false;
