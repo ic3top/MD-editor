@@ -1,6 +1,6 @@
 <template>
   <div class="v-wrapper">
-    <Card class="p-mt-5 p-shadow-4 p-p-4">
+    <Card class="p-mt-5 p-shadow-4 p-p-4" style="z-index: 1">
       <template #header>
         <h1>Oops...</h1>
       </template>
@@ -13,19 +13,22 @@
         </div>
       </template>
     </Card>
-    <div class="v-img-wrapper">
+    <div class="v-img-wrapper" style="z-index: 1">
       <img style="max-height: 100%;" src="../assets/UFO.png" alt="UFO">
     </div>
   </div>
+  <animation-circles />
 </template>
 
 <script>
 import Card from 'primevue/card';
+import AnimationCircles from '../components/AnimationCircles';
 
 export default {
   name: 'NotFound',
   components: {
     Card,
+    AnimationCircles,
   },
   props: {
     resource: {

@@ -5,10 +5,8 @@
       id="editor"
     >
     </textarea>
-    <div v-if="currentEditorMode === HTML" class="v-output">
-      {{ convertedHTML }}
-    </div>
-    <markdown-docs v-else-if="currentEditorMode === DOCS" />
+
+    <markdown-docs v-if="currentEditorMode === DOCS" />
     <div ref="output"
          class="v-output"
          v-html="convertedHTML"
@@ -26,7 +24,7 @@ import converter from '../../libs/showdown';
 import createEditor from '../../libs/CodeMirror';
 import MarkdownDocs from './MarkdownDocs.vue';
 import {
-  DOCS, MARKDOWN, READER, HTML,
+  DOCS, MARKDOWN, READER,
 } from './editorModes.js';
 
 export default {
@@ -37,7 +35,6 @@ export default {
   data() {
     return {
       convertedHTML: '',
-      HTML,
       DOCS,
     };
   },

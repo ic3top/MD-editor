@@ -1,6 +1,6 @@
 <template>
   <div class="v-home">
-    <Card class="p-shadow-6 p-p-4 v-pos-relative">
+    <Card class="p-shadow-6 p-p-4 v-pos-relative" style="z-index: 1">
       <template #header>
         <h1 class="p-text-center" style="border-bottom: 1px solid var(--primary-color)">
           In-browser Markdown editor
@@ -18,78 +18,80 @@
         </a>
       </template>
     </Card>
-    <template v-if="getAllFileNames.length > 0">
-      <Card class="p-shadow-6 p-pt-4 p-mt-2">
-        <template #header>
-          <h2 class="p-pl-3">Your saved files:</h2>
-        </template>
-        <template #content>
-          <div
-            v-for="name in getAllFileNames"
-            :key="name"
-            class="v-link-wrapper"
-          >
-            <template v-if="savedFileName !== name">
-              <router-link
-                style="text-decoration-line: none; font-size: 1.5rem;"
-                :to="'/files/' + name"
-                class="p-d-flex p-align-center"
-              >
-                {{ name }}
-              </router-link>
-              <div class="v-buttons">
-                <Button
-                  @click="editNameOpen(name)"
-                  icon="pi pi-pencil"
-                  class="p-button-rounded p-button-text"
-                />
-                <Button
-                  icon="pi pi-times"
-                  @click="deleteFile($event, name)"
-                  class="p-button-rounded p-button-text"
-                />
-              </div>
-            </template>
-            <template v-else>
-              <InputText
-                id="editName"
-                type="text"
-                ref="editNameInput"
-                @keydown.esc="cancelEditing"
-                @keydown.enter="saveEditing"
-                v-model="newFileName"
-              />
+    <Card
+      v-if="getAllFileNames.length > 0"
+      class="p-shadow-6 p-pt-4 p-mt-2"
+      style="z-index: 1"
+    >
+      <template #header>
+        <h2 class="p-pl-3">Your saved files:</h2>
+      </template>
+      <template #content>
+        <div
+          v-for="name in getAllFileNames"
+          :key="name"
+          class="v-link-wrapper"
+        >
+          <template v-if="savedFileName !== name">
+            <router-link
+              style="text-decoration-line: none; font-size: 1.5rem;"
+              :to="'/files/' + name"
+              class="p-d-flex p-align-center"
+            >
+              {{ name }}
+            </router-link>
+            <div class="v-buttons">
               <Button
-                icon="pi pi-check"
-                @click="saveEditing"
+                @click="editNameOpen(name)"
+                icon="pi pi-pencil"
                 class="p-button-rounded p-button-text"
               />
               <Button
                 icon="pi pi-times"
-                @click="cancelEditing"
+                @click="deleteFile($event, name)"
                 class="p-button-rounded p-button-text"
               />
-            </template>
-          </div>
-        </template>
-        <template #footer>
-          <div class="p-d-flex p-justify-end p-mt-4">
-            <Button
-              label="Create new file +"
-              class="p-button-outlined"
-              @click="displayDialog = true"
+            </div>
+          </template>
+          <template v-else>
+            <InputText
+              id="editName"
+              type="text"
+              ref="editNameInput"
+              @keydown.esc="cancelEditing"
+              @keydown.enter="saveEditing"
+              v-model="newFileName"
             />
-          </div>
-        </template>
-      </Card>
-    </template>
-    <template v-else>
-      <Button
-        label="Create new file +"
-        class="p-button-outlined"
-        @click="displayDialog = true"
-      />
-    </template>
+            <Button
+              icon="pi pi-check"
+              @click="saveEditing"
+              class="p-button-rounded p-button-text"
+            />
+            <Button
+              icon="pi pi-times"
+              @click="cancelEditing"
+              class="p-button-rounded p-button-text"
+            />
+          </template>
+        </div>
+      </template>
+      <template #footer>
+        <div class="p-d-flex p-justify-end p-mt-4">
+          <Button
+            label="Create new file +"
+            class="p-button-outlined"
+            @click="displayDialog = true"
+          />
+        </div>
+      </template>
+    </Card>
+    <Button
+      v-else
+      label="Create new file +"
+      class="p-button-outlined"
+      @click="displayDialog = true"
+      style="z-index: 1"
+    />
 
     <ConfirmPopup></ConfirmPopup>
     <new-file-dialog
@@ -97,6 +99,7 @@
       @createNewFile="createNewFile"
     />
   </div>
+  <animation-circles />
 </template>
 
 <script>
@@ -112,6 +115,7 @@ import {
 
 import { nextTick } from 'vue';
 import { mapGetters, mapMutations } from 'vuex';
+import AnimationCircles from '../components/AnimationCircles';
 import newFileDialog from '../components/newFileDialog.vue';
 
 export default {
@@ -122,6 +126,7 @@ export default {
     ConfirmPopup,
     InputText,
     newFileDialog,
+    AnimationCircles,
   },
   data() {
     return {

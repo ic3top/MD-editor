@@ -29,7 +29,7 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import newFileDialog from '../../components/newFileDialog.vue';
 import settingsDialog from '../../components/settingsDialog.vue';
 import {
-  DOCS, MARKDOWN, READER, HTML, DEFAULT,
+  DOCS, MARKDOWN, READER, DEFAULT,
 } from './editorModes.js';
 import {
   bold,
@@ -92,17 +92,6 @@ export default {
                   },
                 });
               },
-            },
-            {
-              separator: true,
-            },
-            {
-              label: 'Export',
-              icon: 'pi pi-fw pi-external-link',
-            },
-            {
-              label: 'Import',
-              icon: 'pi pi-fw pi-upload',
             },
           ],
         },
@@ -199,12 +188,6 @@ export default {
               icon: 'pi pi-fw pi-list',
               command: () => {
                 this.CHANGE_EDITOR_MODE({ mode: DOCS });
-              },
-            },
-            {
-              label: 'Unparsed HTML',
-              command: () => {
-                this.CHANGE_EDITOR_MODE({ mode: HTML });
               },
             },
           ],
