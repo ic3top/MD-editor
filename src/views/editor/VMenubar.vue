@@ -31,20 +31,7 @@ import settingsDialog from '../../components/settingsDialog.vue';
 import {
   DOCS, MARKDOWN, READER, DEFAULT,
 } from './editorModes.js';
-import {
-  bold,
-  italic,
-  strikethrough,
-  image,
-  quote,
-  code,
-  link,
-  taskList,
-  unOrderedList,
-  orderedList,
-  table,
-  heading,
-} from './editorToolbarCommands';
+import getEditToolbarItems from './editorToolbarItems';
 
 export default {
   name: 'VMenubar',
@@ -98,65 +85,7 @@ export default {
         {
           label: 'Edit',
           icon: 'pi pi-fw pi-pencil',
-          items: [
-            {
-              label: 'heading',
-              command: () => heading(this.$route.params.name),
-            },
-            {
-              label: 'bold',
-              command: () => bold(this.$route.params.name),
-            },
-            {
-              label: 'italic',
-              command: () => italic(this.$route.params.name),
-            },
-            {
-              label: 'strikethrough',
-              command: () => strikethrough(this.$route.params.name),
-            },
-            {
-              label: 'image',
-              icon: 'pi pi-fw pi-image',
-              command: () => image(this.$route.params.name),
-            },
-            {
-              label: 'quote',
-              command: () => quote(this.$route.params.name),
-            },
-            {
-              label: 'code',
-              command: () => code(this.$route.params.name),
-            },
-            {
-              label: 'link',
-              icon: 'pi pi-fw pi-link',
-              command: () => link(this.$route.params.name),
-            },
-            {
-              label: 'table',
-              icon: 'pi pi-fw pi-table',
-              command: () => table(this.$route.params.name),
-            },
-            {
-              label: 'list',
-              icon: 'pi pi-fw pi-list',
-              items: [
-                {
-                  label: 'unordered',
-                  command: () => unOrderedList(this.$route.params.name),
-                },
-                {
-                  label: 'ordered',
-                  command: () => orderedList(this.$route.params.name),
-                },
-                {
-                  label: 'tasks',
-                  command: () => taskList(this.$route.params.name),
-                },
-              ],
-            },
-          ],
+          items: getEditToolbarItems(this.$route.params.name),
         },
         {
           label: 'View',
