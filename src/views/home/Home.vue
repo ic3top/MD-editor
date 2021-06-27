@@ -27,53 +27,13 @@
         <h2 class="p-pl-3">Your saved files:</h2>
       </template>
       <template #content>
-        <div
+        <file-name-line
           v-for="name in getAllFileNames"
           :key="name"
-          class="v-link-wrapper"
-        >
-          <template v-if="savedFileName !== name">
-            <router-link
-              style="text-decoration-line: none; font-size: 1.5rem;"
-              :to="'/files/' + name"
-              class="p-d-flex p-align-center"
-            >
-              {{ name }}
-            </router-link>
-            <div class="v-buttons">
-              <Button
-                @click="editNameOpen(name)"
-                icon="pi pi-pencil"
-                class="p-button-rounded p-button-text"
-              />
-              <Button
-                icon="pi pi-times"
-                @click="deleteFile($event, name)"
-                class="p-button-rounded p-button-text"
-              />
-            </div>
-          </template>
-          <template v-else>
-            <InputText
-              id="editName"
-              type="text"
-              ref="editNameInput"
-              @keydown.esc="cancelEditing"
-              @keydown.enter="saveEditing"
-              v-model="newFileName"
-            />
-            <Button
-              icon="pi pi-check"
-              @click="saveEditing"
-              class="p-button-rounded p-button-text"
-            />
-            <Button
-              icon="pi pi-times"
-              @click="cancelEditing"
-              class="p-button-rounded p-button-text"
-            />
-          </template>
-        </div>
+          :name="name"
+          @deleteFile="deleteFile"
+          @saveEditedName="saveEditedName"
+        />
       </template>
       <template #footer>
         <div class="p-d-flex p-justify-end p-mt-4">
@@ -106,17 +66,16 @@
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 import ConfirmPopup from 'primevue/confirmpopup';
-import InputText from 'primevue/inputtext';
 import {
   DELETE_FILE,
   CREATE_NEW_FILE,
   CHANGE_FILE_NAME,
 } from '@/store/mutations-types';
 
-import { nextTick } from 'vue';
 import { mapGetters, mapMutations } from 'vuex';
-import AnimationCircles from '../components/AnimationCircles';
-import newFileDialog from '../components/newFileDialog.vue';
+import FileNameLine from './FileNameLine.vue';
+import AnimationCircles from '../../components/AnimationCircles';
+import newFileDialog from '../../components/newFileDialog.vue';
 
 export default {
   name: 'Home',
@@ -124,15 +83,14 @@ export default {
     Card,
     Button,
     ConfirmPopup,
-    InputText,
     newFileDialog,
     AnimationCircles,
+    FileNameLine,
   },
   data() {
     return {
       displayDialog: false,
       newFileName: '',
-      savedFileName: '',
     };
   },
   computed: {
@@ -140,34 +98,15 @@ export default {
   },
   methods: {
     ...mapMutations([DELETE_FILE, CREATE_NEW_FILE, CHANGE_FILE_NAME]),
-    deleteFile(event, name) {
-      this.$confirm.require({
-        target: event.currentTarget,
-        message: 'Are you sure you want to proceed?',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-          this.DELETE_FILE({ name });
-        },
-      });
+    deleteFile(name) {
+      this.DELETE_FILE({ name });
     },
     createNewFile(newFileName) {
       this.CREATE_NEW_FILE({ name: newFileName });
       this.$router.push(`/files/${newFileName}`);
     },
-    async editNameOpen(name) {
-      this.savedFileName = name;
-      this.newFileName = name;
-      await nextTick();
-      this.$refs.editNameInput.$el.focus();
-    },
-    cancelEditing() {
-      this.newFileName = '';
-      this.savedFileName = '';
-    },
-    saveEditing() {
-      this.CHANGE_FILE_NAME({ oldName: this.savedFileName, newName: this.newFileName });
-      this.savedFileName = '';
-      this.newFileName = '';
+    saveEditedName(namesObj) {
+      this.CHANGE_FILE_NAME(namesObj);
     },
   },
 };
