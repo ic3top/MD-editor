@@ -128,8 +128,8 @@ export default {
 }
 
 .v-link-wrapper:hover {
-  box-shadow: 2px 3px 7px #222222;
-}
+   box-shadow: 2px 3px 7px #222222;
+ }
 
 .v-link-wrapper:hover .v-buttons {
   visibility: visible;
@@ -137,5 +137,15 @@ export default {
 
 .v-buttons {
   visibility: hidden;
+}
+
+@media (max-width: 960px) {
+  .v-link-wrapper:hover {
+    box-shadow: none!important;
+  }
+
+  .v-buttons {
+    visibility: visible;
+  }
 }
 </style>

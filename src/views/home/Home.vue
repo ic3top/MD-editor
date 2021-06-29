@@ -1,6 +1,6 @@
 <template>
   <div class="v-home">
-    <Card class="p-shadow-6 p-p-4 v-pos-relative" style="z-index: 1">
+    <Card class="p-shadow-6 p-p-4 p-mt-4 v-pos-relative" style="z-index: 1">
       <template #header>
         <h1 class="p-text-center" style="border-bottom: 1px solid var(--primary-color)">
           In-browser Markdown editor
@@ -20,7 +20,7 @@
     </Card>
     <Card
       v-if="getAllFileNames.length > 0"
-      class="p-shadow-6 p-pt-4 p-mt-2"
+      class="p-shadow-6 p-pt-4 p-mt-4"
       style="z-index: 1"
     >
       <template #header>

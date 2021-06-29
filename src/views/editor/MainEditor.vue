@@ -25,4 +25,10 @@ export default {
 .v-maineditor {
   height: calc(100vh - 76px);
 }
+
+@media (max-width: 960px) {
+  .v-maineditor {
+    height: calc(100vh - 68px);
+  }
+}
 </style>

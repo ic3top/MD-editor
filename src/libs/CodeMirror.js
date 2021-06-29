@@ -6,7 +6,6 @@ import 'codemirror/theme/material-ocean.css';
 
 // modes
 import 'codemirror/mode/gfm/gfm';
-import 'codemirror/mode/markdown/markdown';
 import 'codemirror/mode/javascript/javascript';
 
 // active line addon

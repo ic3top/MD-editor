@@ -45,7 +45,6 @@ export default {
     return {
       displayNewFileDialog: false,
       displaySettingsDialog: false,
-      newConverterSettings: {},
       items: [
         {
           label: 'File',
@@ -90,6 +89,7 @@ export default {
         {
           label: 'View',
           icon: 'pi pi-fw pi-eye',
+          visible: () => window.innerWidth > 960,
           items: [
             {
               label: 'Reader',

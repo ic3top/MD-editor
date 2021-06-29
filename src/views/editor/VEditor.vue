@@ -7,19 +7,27 @@
     </textarea>
 
     <markdown-docs v-if="currentEditorMode === DOCS" />
-    <div ref="output"
-         class="v-output"
-         v-html="convertedHTML"
-         v-else
+    <div
+      v-else
+      ref="output"
+      class="v-output"
+      :class="{ 'v-d-none': isEditorShown }"
+      v-html="convertedHTML"
     >
     </div>
   </div>
+  <Button
+    :icon="isEditorShown ? 'pi pi-eye' : 'pi pi-eye-slash'"
+    @click="toggleView"
+    class="v-eye p-button-rounded p-button-outlined"
+  />
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 import { CHANGE_CONTENT_BY_FILE_NAME } from '@/store/mutations-types';
 
+import Button from 'primevue/button';
 import converter from '../../libs/showdown';
 import createEditor from '../../libs/CodeMirror';
 import MarkdownDocs from './MarkdownDocs.vue';
@@ -31,11 +39,14 @@ export default {
   name: 'VEditor',
   components: {
     MarkdownDocs,
+    Button,
   },
   data() {
     return {
       convertedHTML: '',
       DOCS,
+      // for 960px>screens
+      isEditorShown: true,
     };
   },
   mounted() {
@@ -97,6 +108,14 @@ export default {
     setEditorContent(content = this.getContentByFileName(this.currentFileName)) {
       this.editor.getDoc().setValue(content);
     },
+    toggleView() {
+      this.isEditorShown = !this.isEditorShown;
+      if (this.isEditorShown) {
+        this.editor.getWrapperElement().style.display = 'block';
+      } else {
+        this.editor.getWrapperElement().style.display = 'none';
+      }
+    },
   },
   watch: {
     $route: {
@@ -119,6 +138,7 @@ export default {
 };
 </script>
 
+<style src="./outputStyles.css" scoped></style>
 <style scoped>
 .v-container {
   display: flex;
@@ -154,8 +174,15 @@ export default {
   border-radius: 3px
 }
 
-/* MODES */
+.v-eye {
+  display: none;
+  position: absolute;
+  right: 15px;
+  bottom: 25px;
+  z-index: 1000;
+}
 
+/* MODES */
 .md-mode :deep(.CodeMirror) {
   width: 100%;
 }
@@ -174,71 +201,20 @@ export default {
 .reader-mode.v-container {
   background-color: #dddddd;
 }
-
 /* /MODES */
 
-.v-output :deep(pre) {
-  white-space: pre-wrap;
-  background-color: #f8f8f8;
-  border: 1px solid #dfdfdf;
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
-  padding: 0.125rem 0.3125rem 0.0625rem;
-}
+@media screen and (max-width: 960px) {
+  .v-output, :deep(.CodeMirror) {
+    width: 100%;
+    height: 100%;
+  }
 
-.v-output :deep(code) {
-  background-color: transparent;
-  border: 0;
-  padding: 0;
-}
+  .v-d-none {
+    display: none;
+  }
 
-.v-output :deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(h5), :deep(h6) {
-  font-family: 'Old Standard TT', serif;
-  font-weight: bold;
-  color: #222;
-  line-height: 1.4;
-  margin: 0.5rem 0;
-  text-rendering: optimizeLegibility;
-}
-
-.v-output:deep(h3) {
-  border-bottom: 1px solid #ddd;
-}
-
-.v-output:deep(p) {
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: normal;
-  line-height: 1.6;
-  margin-bottom: 1.25rem;
-}
-
-.v-output:deep(a) {
-  color: #008CBA;
-  line-height: inherit;
-  text-decoration: none;
-}
-
-.v-output :deep(ul), :deep(ol), :deep(dl) {
-  font-family: inherit;
-  font-size: 1rem;
-  line-height: 1.6;
-  list-style-position: outside;
-  margin-left: 1em;
-}
-
-.v-output :deep(blockquote) {
-  padding: 0.5625rem 1.25rem 0 1.1875rem;
-  border-left: 1px solid #ddd;
-  line-height: 1.6;
-  color: #6f6f6f;
-}
-
-.v-output :deep(td), :deep(th) {
-  padding: 5px;
-  border: 1px solid #222222;
-}
-.v-output :deep(table) {
-  border-collapse: collapse;
+  .v-eye {
+    display: block;
+  }
 }
 </style>
