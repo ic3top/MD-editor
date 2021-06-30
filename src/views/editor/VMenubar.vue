@@ -53,7 +53,7 @@ export default {
             {
               label: 'All files',
               icon: 'pi pi-fw pi-folder',
-              // TODO: not reactive in case of creating a new file
+              // not reactive in case of creating a new file
               items: this.$store.getters.getFileItems,
             },
             {
@@ -144,6 +144,8 @@ export default {
       this.CREATE_NEW_FILE({ name: newFileName });
       this.displayNewFileDialog = false;
       this.$router.push(`/files/${newFileName}`);
+      // TODO: FIX next line
+      this.items[0].items[0].items = this.getFileItems;
     },
     applySettings(newEditorSettings) {
       this.UPDATE_EDITOR_SETTINGS(newEditorSettings);
@@ -151,7 +153,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['getEditorSettings']),
+    ...mapGetters(['getEditorSettings', 'getFileItems']),
   },
 };
 </script>
